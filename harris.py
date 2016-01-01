@@ -19,8 +19,8 @@ dst = cv2.dilate(dst,None)
 dst2 = cv2.dilate(dst2,None)
 
 # Threshold for an optimal value, it may vary depending on the image.
-img[dst>0.01*dst.max()]=[0,0,255]
-img2[dst2>0.01*dst2.max()]=[0,0,255]
+img[dst>0.05*dst.max()]=[0,0,255]
+img2[dst2>0.05*dst2.max()]=[0,0,255]
 
 r = 600.0 / img.shape[1]
 dim = (600, int(img.shape[0] * r))
