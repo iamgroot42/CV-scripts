@@ -1,9 +1,14 @@
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+import sys
 
-img = cv2.imread("a.jpg")
-img2 = cv2.imread("b.jpg")
+if len(sys.argv) < 2:
+	print "Format : python sift.py <image1> <image2>"
+	exit()
+
+img = cv2.imread(sys.argv[1])
+img2 = cv2.imread(sys.argv[2])
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 sift = cv2.xfeatures2d.SIFT_create()
@@ -32,15 +37,23 @@ MIN_MATCH_COUNT = 10
 if len(good)>MIN_MATCH_COUNT:
 	src_pts = np.float32([ kps[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
 	dst_pts = np.float32([ kps2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-
-# M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-# matchesMask = mask.ravel().tolist()
-
-	print src_pts.shape, dst_pts.shape
-	print src_pts[0],dst_pts[0] 
+	f = open('points_sift_img1.txt','w')
+	f2 = open('points_sift_img2.txt','w')
+	for x in range(src_pts.size):
+		if x % 2 == 0:
+			f.write(str(src_pts.item(x))+" ")
+			f2.write(str(dst_pts.item(x))+" ")
+		else:
+			f.write(str(src_pts.item(x))+"\n")
+			f2.write(str(dst_pts.item(x))+"\n")
+	f.close()
+	f2.close()
 else:
 	print "Not enough good matches"
 	exit()
+
+M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+# matchesMask = mask.ravel().tolist()
 
 draw_params = dict(matchColor = (0,255,0),
                    singlePointColor = (255,0,0),

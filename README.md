@@ -4,4 +4,4 @@ An estimator which takes two images and estimates the homography/affine transfor
 
 ### Requirements 
 - OpenCV (v3.x ,for Python)
-- <a href="http://www.pyimagesearch.com/opencv-tutorials-resources-guides/"> opencv_contrib package (for SIFT,SURF </a>
+- <a href="http://www.pyimagesearch.com/opencv-tutorials-resources-guides/"> opencv_contrib package (for SIFT,SURF) </a>
