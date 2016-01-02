@@ -49,8 +49,8 @@ MIN_MATCH_COUNT = 10
 if len(good)>MIN_MATCH_COUNT:
 	src_pts = np.float32([ kps[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
 	dst_pts = np.float32([ kps2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-	f = open('points_feature_img1.txt','w')
-	f2 = open('points_feature_img2.txt','w')
+	f = open('points_img1.txt','w')
+	f2 = open('points_img2.txt','w')
 	for x in range(src_pts.size):
 		if x % 2 == 0:
 			f.write(str(src_pts.item(x))+" ")
@@ -67,6 +67,7 @@ else:
 
 # M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
 # matchesMask = mask.ravel().tolist()
+# print M
 
 # draw_params = dict(matchColor = (0,255,0),
                    # singlePointColor = (255,0,0),
