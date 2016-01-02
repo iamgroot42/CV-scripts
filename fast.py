@@ -6,7 +6,6 @@ img = cv2.imread('a.jpg',0)
 img2 = cv2.imread('b.jpg',0)
 
 # Finding keypoints
-
 # Initiate FAST object with default values
 fast = cv2.FastFeatureDetector_create(80) #Try playing around with this
 # find and draw the keypoints
@@ -21,9 +20,11 @@ cv2.imwrite('a_fast.png',lolk)
 cv2.imwrite('b_fast.png',lolk2)
 
 # Finding descriptors
-for x in dir(cv2):
-	print x
-brief = cv2.DescriptorExtractor_create("BRISK")
+# print dir(fast.compute().__doc__)
+fast.compute(img,kp)
+# print des
+# brief = cv2.DescriptorExtractor_create("BRISK")
+# brief = cv2.DescriptorExtractor_create("BRIEF")
 # kp, des = brief.compute(img, kp)
 # kp2, des2 = brief.compute(img2, kp2)
 # print "Shape if first image ",des.shape
