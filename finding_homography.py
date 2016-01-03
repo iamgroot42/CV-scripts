@@ -40,19 +40,21 @@ for i in range(9):
 	H[i]/=H[8]
 
 # Least square solution
-# matr = H.reshape((3,3))
-# print "Homography matrix (least square) : "
-# print matr
-# print "Inverse homography (least square) : "
-# Hinv = np.linalg.inv(matr) 
-# for i in range(9):
-# 	Hinv[i/3,i%3]/=Hinv[2,2]
-# print Hinv
-# print ""
+matr = H.reshape((3,3))
+# p1 = H.p2 transformed to the form A.h such that we can minimize ||A.h||.^2
+print "Homography matrix (least square) : "
+print matr
+print "Inverse homography (least square) : "
+Hinv = np.linalg.inv(matr) 
+for i in range(9):
+	Hinv[i/3,i%3]/=Hinv[2,2]
+print Hinv
+print ""
 
 # SVD solution 
 print "Homography matrix (SVD) : "
 u,s,v = np.linalg.svd(A,True,True)
+# A = u.s.v , we need last column of v' , that is, last row of v
 Hs = v[v.shape[0]-1:].reshape(3,3)
 for i in range(9):
 	Hs[i/3,i%3]/=Hs[2,2]
