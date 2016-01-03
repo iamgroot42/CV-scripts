@@ -65,9 +65,10 @@ else:
 	print "Not enough good matches"
 	exit()
 
-# M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
 # matchesMask = mask.ravel().tolist()
-# print M
+print "Homography calculated via in-built function : "
+print M
 
 # draw_params = dict(matchColor = (0,255,0),
                    # singlePointColor = (255,0,0),
