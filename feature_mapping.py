@@ -61,19 +61,21 @@ if len(good)>MIN_MATCH_COUNT:
 	f.close()
 	f2.close()
 	print "Files generated"
+	M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+	print "Homography calculated via in-built function : "
+	print M
+
+	matchesMask = mask.ravel().tolist()
+	h,w = img.shape[0],img.shape[1]
+	pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
+	dst = cv2.perspectiveTransform(pts,M)
+	img2 = cv2.polylines(img2,[np.int32(dst)],True,255,3, cv2.LINE_AA)
+	draw_params = dict(matchColor = (0,255,0), # draw matches in green color
+	    singlePointColor = None,
+	    matchesMask = matchesMask, # draw only inliers
+	    flags = 2)
+	img3 = cv2.drawMatches(img,kps,img2,kps2,good,None,**draw_params)
+	plt.imshow(img3, 'gray'),plt.show()
 else:
 	print "Not enough good matches"
 	exit()
-
-M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-# matchesMask = mask.ravel().tolist()
-print "Homography calculated via in-built function : "
-print M
-
-# draw_params = dict(matchColor = (0,255,0),
-                   # singlePointColor = (255,0,0),
-                   # matchesMask = matchesMask,
-                   # flags = 0)
-
-# img3 = cv2.drawMatchesKnn(img,kps,img,kps2,matches,None,**draw_params)
-# plt.imshow(img3,),plt.show()
