@@ -15,6 +15,9 @@ if sys.argv[3].lower() not in ["sift","surf"]:
 
 img = cv2.imread(sys.argv[1])
 img2 = cv2.imread(sys.argv[2])
+
+# img = cv2.resize(img,(2,2))
+# img2 = cv2.resize(img,(2,2))
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
