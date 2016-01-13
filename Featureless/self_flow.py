@@ -3,7 +3,7 @@ import cv2
 import sys
 
 if len(sys.argv) < 3:
-	print "Format : python feature_mapping.py <image1> <image2> "
+	print "Format : python self_flow.py <image1> <image2> "
 	exit()
 
 img = cv2.imread(sys.argv[1],0)
@@ -15,7 +15,7 @@ def window_flow(window,window2):
 	It = np.zeros(window.shape)
 	Ix[:,1:] = window[:,1:] - window[:,:-1]
 	Iy[1:,] = window[1:,] - window[-1,]
-	It[:,:] = window[:,:] - window2[:]
+	It[:,:] = window2[:,:] - window[:]
 	Ix_Ix = np.sum(np.square(Ix))
 	Iy_Iy = np.sum(np.square(Iy))
 	Ix_Iy = np.sum(Ix*Iy)
@@ -48,3 +48,23 @@ print "Horizontal flow"
 print flow_x
 print "Vertical flow"
 print flow_y
+
+img_x = np.zeros(img.shape)
+img_y = np.zeros(img.shape)
+for i in range(r):
+	for j in range(c):
+		img_x[i,j] = flow_x[i/5,j/5]
+		img_y[i,j] = flow_y[i/5,j/5]				
+
+cv2.imshow('Horizontal gradient',img_x)
+cv2.imshow('Vertical gradient',img_y)
+cv2.waitKey(0)
+
+# hsv = np.zeros_like(img)
+# hsv[...,1] = 255
+# mag, ang = cv2.cartToPolar(img_x, img_y)
+# hsv[...,0] = ang*180/np.pi/2
+# hsv[...,2] = cv2.normalize(mag,None,0,255,cv2.NORM_MINMAX)
+# rgb = cv2.cvtColor(hsv,cv2.COLOR_HSV2BGR)
+# cv2.imshow('flow',rgb)
+# cv2.waitKey(0)
