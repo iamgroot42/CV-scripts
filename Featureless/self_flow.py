@@ -40,8 +40,8 @@ r,c = img.shape[:2]
 i=0
 j=0
 
-flow_x = np.zeros((r/5,c/5))
-flow_y = np.zeros((r/5,c/5))
+flow_x = np.zeros((r/5+1,c/5+1))
+flow_y = np.zeros((r/5+1,c/5+1))
 
 for i in range(r/5):
 	for j in range(c/5):
@@ -54,12 +54,10 @@ for i in range(r):
 		img_x[i,j] = flow_x[i/5,j/5]
 		img_y[i,j] = flow_y[i/5,j/5]				
 
-hsv = np.zeros_like(img_in)
-hsv[...,1] = 255
-mag, ang = cv2.cartToPolar(img_x, img_y)
+template = img_in
 
-hsv[...,0] = ang*180/np.pi/2
-hsv[...,2] = cv2.normalize(mag,None,0,255,cv2.NORM_MINMAX)
-rgb = cv2.cvtColor(hsv,cv2.COLOR_HSV2BGR)
-cv2.imshow('Optical flow',rgb)
-cv2.waitKey(0)
+for i in range(r/5):
+	for j in range(c/5):
+		cv2.arrowedLine(template,(j*5+2,i*5+2),(int(round(j*5+2+flow_y[i,j])),int(round(i*5+2+flow_x[i,j]))),(255,0,0))
+
+cv2.imwrite('Optical Flow.jpg',template)
