@@ -24,7 +24,6 @@ def window_flow(window,window2):
 	Ix_Iy = np.sum(Ix*Iy)
 	Ix_It = np.sum(Ix*It)
 	Iy_It = np.sum(Iy*It)
-
 	mat1 = np.matrix([[Ix_Ix,Ix_Iy],[Ix_Iy,Iy_Iy]])
 	mat2 = np.matrix([[-Ix_It],[-Iy_It]])
 
@@ -39,23 +38,34 @@ r,c = img.shape[:2]
 
 i=0
 j=0
-
-flow_x = np.zeros((r/5+1,c/5+1))
-flow_y = np.zeros((r/5+1,c/5+1))
-
-for i in range(r/5):
-	for j in range(c/5):
-		flow_x[i,j],flow_y[i,j] = window_flow(img[5*i:5*i+5,5*j:5*j+5],img2[5*i:5*i+5,5*j:5*j+5])
-
-img_x = np.zeros(img.shape)
-img_y = np.zeros(img.shape)
-for i in range(r):
-	for j in range(c):
-		img_x[i,j] = flow_x[i/5,j/5]
-		img_y[i,j] = flow_y[i/5,j/5]				
 template = img2_in
 
-for i in range(r/5):
-	for j in range(c/5):
-		cv2.arrowedLine(template,(j*5+2,i*5+2),(int(round(j*5+2+flow_y[i,j])),int(round(i*5+2+flow_x[i,j]))),(255,0,0))
+# Uncomment to calculate flow on whole image
+u,v = window_flow(img,img2)
+print u,v
+point1 = (c/2 , r/2)
+point2 = (int(round(c/2+u)) , int(round(r/2+v)))
+cv2.arrowedLine(template,point1,point2,(255,0,0),3)
 cv2.imwrite('Optical Flow.jpg',template)
+exit()
+
+# flow_x = np.zeros((r/5+1,c/5+1))
+# flow_y = np.zeros((r/5+1,c/5+1))
+
+# for i in range(r/5):
+# 	for j in range(c/5):
+# 		flow_x[i,j],flow_y[i,j] = window_flow(img[5*i:5*i+5,5*j:5*j+5],img2[5*i:5*i+5,5*j:5*j+5])
+
+# img_x = np.zeros(img.shape)
+# img_y = np.zeros(img.shape)
+# for i in range(r):
+# 	for j in range(c):
+# 		img_x[i,j] = flow_x[i/5,j/5]
+# 		img_y[i,j] = flow_y[i/5,j/5]			
+
+# for i in range(r/5):
+# 	for j in range(c/5):
+# 		point1 = (c/2 , r/2)
+# 		point2 = (int(round(c/2+flow_x[i,j])) , int(round(r/2+flow_y[i,j])))
+# 		cv2.arrowedLine(template,point1,point2,(255,0,0))
+# cv2.imwrite('Optical Flow(5x5).jpg',template)
