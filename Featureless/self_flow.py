@@ -53,11 +53,9 @@ for i in range(r):
 	for j in range(c):
 		img_x[i,j] = flow_x[i/5,j/5]
 		img_y[i,j] = flow_y[i/5,j/5]				
-
-template = img_in
+template = img2_in
 
 for i in range(r/5):
 	for j in range(c/5):
 		cv2.arrowedLine(template,(j*5+2,i*5+2),(int(round(j*5+2+flow_y[i,j])),int(round(i*5+2+flow_x[i,j]))),(255,0,0))
-
 cv2.imwrite('Optical Flow.jpg',template)
