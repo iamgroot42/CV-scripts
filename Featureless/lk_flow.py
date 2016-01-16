@@ -50,19 +50,25 @@ x = window_flow(img,img2)
 print x
 
 # Uncomment to calculate flow on whole image
-threshold = 10
-abs_error = np.sum((img-img2)**2)
-while abs_error > threshold:
-	u,v = window_flow(img,img2)
-	print int(round(u)),int(round(v))
-	temp = img
-	temp[max(0,int(round(v))):min(0,int(round(v))),max(0,int(round(u))):min(0,int(round(u)))] = img[max(0,-int(round(v))):min(0,-int(round(v))),max(0,-int(round(u))):min(0,-int(round(u)))]
-	# cv2.imshow('pot',temp)
-	# cv2.waitKey(0)
-	# x = input()
-	img = temp
-	abs_error = np.sum((img-img2)**2)
-	print int(round(u)),int(round(v))
+# threshold = 10
+# abs_error = np.sum((img-img2)**2)
+# iterations = 0
+# while abs_error > threshold:
+# while iterations < 100:
+# 	u,v = window_flow(img,img2)
+# 	print u,v
+# 	temp = img
+# 	if(int(round(u))>0):
+# 		temp[:,int(round(u)):] = img[:,:-int(round(u))]
+# 	elif(int(round(u))<0):
+# 		temp[:,:int(round(u))] = img[:,-int(round(u)):]
+# 	if(int(round(v))>0):
+# 		temp[int(round(v)):,:] = img[:-int(round(v)),:]
+# 	elif(int(round(v))<0):
+# 		temp[:int(round(v)),:] = img[-int(round(v)):,:]
+# 	img = temp
+# 	abs_error = np.sum((img-img2)**2)
+# 	iterations += 1
 
 # point1 = (c/2 , r/2)
 # point2 = (int(round(c/2+u)) , int(round(r/2+v)))
