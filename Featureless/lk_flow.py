@@ -23,8 +23,8 @@ def window_flow(window,window2):
 	Iy = np.zeros(window.shape)
 	It = np.zeros(window.shape)
 	Ix[:,1:] = window[:,1:] - window[:,:-1]
-	Iy[1:,] = window[1:,] - window[-1,]
-	It[:,:] = window2[:,:] - window[:]
+	Iy[1:,] = window[1:,:] - window[-1:,:]
+	It = window2 - window
 	Ix_Ix = np.sum(np.square(Ix))
 	Iy_Iy = np.sum(np.square(Iy))
 	Ix_Iy = np.sum(Ix*Iy)
@@ -46,26 +46,29 @@ j=0
 window_size = sys.argv[3]
 template = img2_in
 
+x = window_flow(img,img2)
+print x
+
 # Uncomment to calculate flow on whole image
 threshold = 10
 abs_error = np.sum((img-img2)**2)
 while abs_error > threshold:
 	u,v = window_flow(img,img2)
-	temp = np.zeros(img.shape)
-	temp[int(v):,int(u):] = img[:img.shape[0]-int(v),:img.shape[1]-int(u)]
+	print int(round(u)),int(round(v))
+	temp = img
+	temp[max(0,int(round(v))):min(0,int(round(v))),max(0,int(round(u))):min(0,int(round(u)))] = img[max(0,-int(round(v))):min(0,-int(round(v))),max(0,-int(round(u))):min(0,-int(round(u)))]
 	# cv2.imshow('pot',temp)
 	# cv2.waitKey(0)
 	# x = input()
 	img = temp
 	abs_error = np.sum((img-img2)**2)
-	print abs_error," error"
-	print u,v
+	print int(round(u)),int(round(v))
 
-point1 = (c/2 , r/2)
-point2 = (int(round(c/2+u)) , int(round(r/2+v)))
-cv2.arrowedLine(template,point1,point2,(255,0,0),3)
-cv2.imwrite('Optical Flow.jpg',template)
-exit()
+# point1 = (c/2 , r/2)
+# point2 = (int(round(c/2+u)) , int(round(r/2+v)))
+# cv2.arrowedLine(template,point1,point2,(255,0,0),3)
+# cv2.imwrite('Optical Flow.jpg',template)
+# exit()
 
 # Uncomment to calculate flow on windows
 # flow_x = np.zeros((r/window_size+1,c/window_size+1))
