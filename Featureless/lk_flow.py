@@ -40,6 +40,42 @@ def window_flow(window,window2):
 	return ans
 		# u is along X axis,v is along Y axis
 
+def pyramid_transition(imag,imag2,initial,iters=10):
+	# print "Error",np.sum((imag-imag2)**2)
+	iterations = 0
+	u,v = initial
+	while iterations < iters:
+		ret = window_flow(imag,imag2)
+		u,v = u+ret[0],v+ret[1]
+		print u,v
+		temp = imag
+		if(int(round(u))>0):
+			temp[:,int(round(u)):] = imag[:,:-int(round(u))]
+		elif(int(round(u))<0):
+			temp[:,:int(round(u))] = imag[:,-int(round(u)):]
+		if(int(round(v))>0):
+			temp[int(round(v)):,:] = imag[:-int(round(v)),:]
+		elif(int(round(v))<0):
+			temp[:int(round(v)),:] = imag[-int(round(v)):,:]
+		imag = temp
+		# print "Error",np.sum((imag-imag2)**2)
+		iterations += 1
+	return [2*u,2*v]
+
+
+def pyramid(l1_1,l1_2):
+	l2_1,l2_2 = l1_1[::2,::2],l1_2[::2,::2]
+	l3_1,l3_2 = l2_1[::2,::2],l2_2[::2,::2]
+	l4_1,l4_2 = l3_1[::2,::2],l3_2[::2,::2]
+	l5_1,l5_2 = l4_1[::2,::2],l4_2[::2,::2]
+	x = [0,0]
+	x = pyramid_transition(l5_1,l5_2,x)
+	x = pyramid_transition(l4_1,l4_2,x)
+	x = pyramid_transition(l3_1,l3_2,x)
+	x = pyramid_transition(l2_1,l2_2,x)
+	x = pyramid_transition(l1_1,l1_2,x)
+	return x
+	
 r,c = img.shape[:2]
 i=0
 j=0
