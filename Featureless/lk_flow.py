@@ -35,7 +35,7 @@ def window_flow(window,window2):
 	try:
 		ans = np.linalg.inv(mat1) * mat2
 	except:
-		# Singular matrix : so almost no motion in this part
+		# Singular matrix : assuming negligible motion 
 		ans = [0,0]
 	return ans
 		# u is along X axis,v is along Y axis
@@ -60,7 +60,7 @@ def pyramid_transition(imag,imag2,initial,iters=10):
 		imag = temp
 		# print "Error",np.sum((imag-imag2)**2)
 		iterations += 1
-	return [2*u,2*v]
+	return [u/2,v/2]
 
 
 def pyramid(l1_1,l1_2):
@@ -75,15 +75,17 @@ def pyramid(l1_1,l1_2):
 	x = pyramid_transition(l2_1,l2_2,x)
 	x = pyramid_transition(l1_1,l1_2,x)
 	return x
-	
-r,c = img.shape[:2]
-i=0
-j=0
-window_size = sys.argv[3]
-template = img2_in
 
-x = window_flow(img,img2)
-print x
+# Main :
+f_x,f_y = pyramid(img,img2)	
+print "Flow is ",f_x," , ",f_y
+	
+# i=0
+# j=0
+# window_size = sys.argv[3]
+# template = img2_in
+# x = window_flow(img,img2)
+# print x
 
 # Uncomment to calculate flow on whole image
 # threshold = 10
