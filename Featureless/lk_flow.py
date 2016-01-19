@@ -76,7 +76,7 @@ def pyramid_transition(imag,imag2,initial,iters=20):
 		elif(int(round(v))<0):
 			temp[:int(round(v)),:] = imag[-int(round(v)):,:]
 		imag = temp
-		cv2.imwrite('Harish/'+str(u)+'.jpg',temp)
+		# cv2.imwrite('Harish/'+str(u)+'.jpg',temp)
 		# print "Error",np.sum((imag-imag2)**2)
 		iterations += 1
 	min_index = 0
