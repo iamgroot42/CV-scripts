@@ -24,7 +24,7 @@ def window_flow(window,window2):
 	It = np.zeros(window.shape)
 	Ix = cv2.Sobel(window,cv2.CV_64F,1,0,ksize=5)
 	Iy = cv2.Sobel(window,cv2.CV_64F,0,1,ksize=5)
-	It[1:-1, 1:-1] = window[1:-1, 1:-1] - window2[1:-1, 1:-1]
+	It = window - window2
 	
 	# Method (a)
 	A_a = np.matrix(Ix.ravel())
@@ -55,17 +55,22 @@ def pyramid_transition(imag,imag2,initial,iters=20):
 	# print "Error",np.sum((imag-imag2)**2)
 	iterations = 0
 	u,v = initial
+	errors=[(0,0,0) for i in range(iters)]
 	while iterations < iters:
-		# print "Error ",np.sum(np.square(imag-imag2))
+		error = np.sum(np.square(imag-imag2))
+		# print "Error ",error
+		errors[iterations]=(error,u,v)
 		# Increasing error :|
 		ret = window_flow(imag,imag2)
 		u,v = u+ret[0],v+ret[1]
 		print u,v
 		temp = imag
+		# X-shift
 		if(int(round(u))>0):
 			temp[:,int(round(u)):] = imag[:,:-int(round(u))]
 		elif(int(round(u))<0):
 			temp[:,:int(round(u))] = imag[:,-int(round(u)):]
+		# Y-shift
 		if(int(round(v))>0):
 			temp[int(round(v)):,:] = imag[:-int(round(v)),:]
 		elif(int(round(v))<0):
@@ -74,6 +79,14 @@ def pyramid_transition(imag,imag2,initial,iters=20):
 		cv2.imwrite('Harish/'+str(u)+'.jpg',temp)
 		# print "Error",np.sum((imag-imag2)**2)
 		iterations += 1
+	min_index = 0
+	for i in range(iters):
+		if(errors[i][0] < errors[min_index][0]):
+			min_index = i
+	# print "Minimum index ",min_index
+	# Modified:
+	# return [errors[min_index][1]*2,errors[min_index][2]*2]
+	# Normal:
 	return [u*2,v*2] #A drift of (u,v) becomes (2u,2v) for a level above it
 
 
