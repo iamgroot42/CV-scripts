@@ -5,7 +5,7 @@ import cv2
 import sys
 
 if len(sys.argv) < 3:
-	print "Format : python self_flow.py <image1> <image2>"
+	print "Format : python "+sys.argv[0]+" <image1> <image2>"
 	exit()
 
 try:
@@ -22,10 +22,10 @@ def window_flow(window,window2):
 	Ix = np.zeros(window.shape)
 	Iy = np.zeros(window.shape)
 	It = np.zeros(window.shape)
-	Ix[1:-1, 1:-1] = (window[1:-1, 2:] - window[1:-1, :-2]) / 2
-	Iy[1:-1, 1:-1] = (window[2:, 1:-1] - window[:-2, 1:-1]) / 2
+	Ix = cv2.Sobel(window,cv2.CV_64F,1,0,ksize=5)
+	Iy = cv2.Sobel(window,cv2.CV_64F,0,1,ksize=5)
 	It[1:-1, 1:-1] = window[1:-1, 1:-1] - window2[1:-1, 1:-1]
-
+	
 	# Method (a)
 	A_a = np.matrix(Ix.ravel())
 	A_b = np.matrix(Iy.ravel())
@@ -34,28 +34,24 @@ def window_flow(window,window2):
 	B = np.matrix(It.ravel())
 	B = np.transpose(B)
 	answer = np.linalg.lstsq(A, B)[0]
-	print "Least-square answer:"
-	print answer
+	return answer
+	# # Method (b)
+	# Ix_Ix = np.sum(np.square(Ix))
+	# Iy_Iy = np.sum(np.square(Iy))
+	# Ix_Iy = np.sum(Ix*Iy)
+	# Ix_It = np.sum(Ix*It)
+	# Iy_It = np.sum(Iy*It)
+	# mat1 = np.matrix([[Ix_Ix,Ix_Iy],[Ix_Iy,Iy_Iy]])
+	# mat2 = np.matrix([[-Ix_It],[-Iy_It]])
+	# try:
+	# 	ans = np.linalg.inv(mat1) * mat2
+	# except:
+	# 	# Singular matrix : assuming negligible motion 
+	# 	ans = [0,0]
+	# return ans
+	# 	# u is along X axis,v is along Y axis
 
-	# Method (b)
-	Ix_Ix = np.sum(np.square(Ix))
-	Iy_Iy = np.sum(np.square(Iy))
-	Ix_Iy = np.sum(Ix*Iy)
-	Ix_It = np.sum(Ix*It)
-	Iy_It = np.sum(Iy*It)
-	mat1 = np.matrix([[Ix_Ix,Ix_Iy],[Ix_Iy,Iy_Iy]])
-	mat2 = np.matrix([[-Ix_It],[-Iy_It]])
-	try:
-		ans = np.linalg.inv(mat1) * mat2
-	except:
-		# Singular matrix : assuming negligible motion 
-		ans = [0,0]
-	print "SVD answer:"
-	print ans
-	return ans
-		# u is along X axis,v is along Y axis
-
-def pyramid_transition(imag,imag2,initial,iters=10):
+def pyramid_transition(imag,imag2,initial,iters=20):
 	# print "Error",np.sum((imag-imag2)**2)
 	iterations = 0
 	u,v = initial
@@ -99,6 +95,6 @@ def pyramid(l1_1,l1_2):
 	return [i/2 for i in x]
 
 # Main :
-# f_x,f_y = pyramid(img,img2)	
-# print "Flow is ",f_x," , ",f_y
-window_flow(img,img2)
+f_x,f_y = pyramid(img,img2)	
+print "Flow is ",f_x," , ",f_y
+print "Naive",window_flow(img,img2)
