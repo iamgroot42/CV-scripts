@@ -22,9 +22,22 @@ def window_flow(window,window2):
 	Ix = np.zeros(window.shape)
 	Iy = np.zeros(window.shape)
 	It = np.zeros(window.shape)
-	Ix[:,1:] = window[:,1:] - window[:,:-1]
-	Iy[1:,] = window[1:,:] - window[-1:,:]
-	It = window2 - window
+	Ix[1:-1, 1:-1] = (window[1:-1, 2:] - window[1:-1, :-2]) / 2
+	Iy[1:-1, 1:-1] = (window[2:, 1:-1] - window[:-2, 1:-1]) / 2
+	It[1:-1, 1:-1] = window[1:-1, 1:-1] - window2[1:-1, 1:-1]
+
+	# Method (a)
+	A_a = np.matrix(Ix.ravel())
+	A_b = np.matrix(Iy.ravel())
+	A = np.vstack((A_a,A_b))
+	A = np.transpose(A)
+	B = np.matrix(It.ravel())
+	B = np.transpose(B)
+	answer = np.linalg.lstsq(A, B)[0]
+	print "Least-square answer:"
+	print answer
+
+	# Method (b)
 	Ix_Ix = np.sum(np.square(Ix))
 	Iy_Iy = np.sum(np.square(Iy))
 	Ix_Iy = np.sum(Ix*Iy)
@@ -37,6 +50,8 @@ def window_flow(window,window2):
 	except:
 		# Singular matrix : assuming negligible motion 
 		ans = [0,0]
+	print "SVD answer:"
+	print ans
 	return ans
 		# u is along X axis,v is along Y axis
 
@@ -84,6 +99,6 @@ def pyramid(l1_1,l1_2):
 	return [i/2 for i in x]
 
 # Main :
-f_x,f_y = pyramid(img,img2)	
-print "Flow is ",f_x," , ",f_y
-print "Naive ",window_flow(img,img2)
+# f_x,f_y = pyramid(img,img2)	
+# print "Flow is ",f_x," , ",f_y
+window_flow(img,img2)
