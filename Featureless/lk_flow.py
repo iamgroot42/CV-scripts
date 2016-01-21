@@ -44,11 +44,9 @@ def pyramid_transition(imag,imag2,initial,iters=30):
 	imag = cv2.warpAffine(imag,M,(imag.shape[1],imag.shape[0]))
 	temp = imag
 
-	# print "WOO\n"
 	while iterations < iters:
 		error = np.sum(np.square(temp-imag2))
 		# print "Error ",error
-		# Increasing error :|
 		ret = window_flow(temp,imag2)
 		u,v = u+ret[0],v+ret[1]
 		M = np.float32([[1,0,round(u)],[0,1,round(v)]])
@@ -68,7 +66,6 @@ def pyramid(l1_1,l1_2):
 	l3_1,l3_2 = l2_1[::2,::2],l2_2[::2,::2]
 	l4_1,l4_2 = l3_1[::2,::2],l3_2[::2,::2]
 	l5_1,l5_2 = l4_1[::2,::2],l4_2[::2,::2]	
-	# exit()
 	x = [0,0]
 	x = pyramid_transition(l5_1,l5_2,x)
 	x = pyramid_transition(l4_1,l4_2,x)
