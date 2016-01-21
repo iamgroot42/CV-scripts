@@ -35,23 +35,26 @@ def window_flow(window,window2):
 	answer = np.linalg.lstsq(A, B)[0]
 	return answer
 
-def pyramid_transition(imag,imag2,initial,iters=20):
+def pyramid_transition(imag,imag2,initial,iters=30):
 	# print "Error",np.sum((imag-imag2)**2)
 	iterations = 0
 	u,v = initial
 
 	M = np.float32([[1,0,round(u)],[0,1,round(v)]])
 	imag = cv2.warpAffine(imag,M,(imag.shape[1],imag.shape[0]))
+	temp = imag
 
+	# print "WOO\n"
 	while iterations < iters:
-		error = np.sum(np.square(imag-imag2))
+		error = np.sum(np.square(temp-imag2))
 		# print "Error ",error
 		# Increasing error :|
-		ret = window_flow(imag,imag2)
+		ret = window_flow(temp,imag2)
 		u,v = u+ret[0],v+ret[1]
-		# print u,v
 		M = np.float32([[1,0,round(u)],[0,1,round(v)]])
-  		imag = cv2.warpAffine(imag,M,(imag.shape[1],imag.shape[0]))
+		# Warped original iamge by (u+del(u),v+del(v)) instead of warping new image by del(u),del(v)
+		# ,as rounding off errors keep accumulating 
+  		temp = cv2.warpAffine(imag,M,(imag.shape[1],imag.shape[0]))
   		# try:
 		# 	cv2.imwrite('Harish/'+str(u)+'.jpg',imag)
 		# except:
@@ -64,7 +67,8 @@ def pyramid(l1_1,l1_2):
 	l2_1,l2_2 = l1_1[::2,::2],l1_2[::2,::2]
 	l3_1,l3_2 = l2_1[::2,::2],l2_2[::2,::2]
 	l4_1,l4_2 = l3_1[::2,::2],l3_2[::2,::2]
-	l5_1,l5_2 = l4_1[::2,::2],l4_2[::2,::2]
+	l5_1,l5_2 = l4_1[::2,::2],l4_2[::2,::2]	
+	# exit()
 	x = [0,0]
 	x = pyramid_transition(l5_1,l5_2,x)
 	x = pyramid_transition(l4_1,l4_2,x)
