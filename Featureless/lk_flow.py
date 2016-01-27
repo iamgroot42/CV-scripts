@@ -62,10 +62,16 @@ def pyramid_transition(imag,imag2,initial,iters=30):
 
 
 def pyramid(l1_1,l1_2):
-	l2_1,l2_2 = l1_1[::2,::2],l1_2[::2,::2]
-	l3_1,l3_2 = l2_1[::2,::2],l2_2[::2,::2]
-	l4_1,l4_2 = l3_1[::2,::2],l3_2[::2,::2]
-	l5_1,l5_2 = l4_1[::2,::2],l4_2[::2,::2]	
+	# Gaussian blur + downsample, to avoid aliasing
+	kernel = np.ones((5,5),np.float32)/25
+	l2_1,l2_2 = cv2.filter2D(l1_1,-1,kernel),cv2.filter2D(l1_2,-1,kernel)
+	l2_1,l2_2 = l2_1[::2,::2],l2_2[::2,::2]
+	l3_1,l3_2 = cv2.filter2D(l2_1,-1,kernel),cv2.filter2D(l2_2,-1,kernel)
+	l3_1,l3_2 = l3_1[::2,::2],l3_2[::2,::2]
+	l4_1,l4_2 = cv2.filter2D(l3_1,-1,kernel),cv2.filter2D(l3_2,-1,kernel)
+	l4_1,l4_2 = l4_1[::2,::2],l4_2[::2,::2]
+	l5_1,l5_2 = cv2.filter2D(l4_1,-1,kernel),cv2.filter2D(l4_2,-1,kernel)
+	l5_1,l5_2 = l5_1[::2,::2],l5_2[::2,::2]
 	x = [0,0]
 	x = pyramid_transition(l5_1,l5_2,x)
 	x = pyramid_transition(l4_1,l4_2,x)
