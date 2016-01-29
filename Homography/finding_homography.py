@@ -1,5 +1,3 @@
-# Made by : Anshuman Suri
-
 import numpy as np
 import cv2
 
