@@ -34,43 +34,30 @@ def window_flow(window,window2,Ix=None,Iy=None):
 	try:
 		ans = np.linalg.inv(mat1) * mat2
 	except:
-		# Singular matrix : so almost no motion in this part
+		# Singular matrix - almost no motion
 		ans = [0,0]
 	return ans,Ix,Iy
 
-def pyramid_transition(imag,imag2,initial,iters=20):
-	# print "Error",np.sum((imag-imag2)**2)
+def pyramid_transition(imag,imag2,initial,iters=10):
 	iterations = 0
 	u,v = initial
-
 	M = np.float32([[1,0,u],[0,1,v]])
-	# M2 = np.float32([[1,0,u],[0,1,v]],flags=cv2.INTER_CUBIC)
-	# print sum(sum(M-M2))
 	imag = cv2.warpAffine(imag,M,(imag.shape[1],imag.shape[0]))
-	temp = imag
-	# print "\n\n"
+	temp = imag	
 	while iterations < iters:
-		# error = np.sum(np.square(temp-imag2))
-		# print error
+		# Calculating Ix,Iy for first iteration of this level
 		if iterations is 0:	
 			ret,Ix,Iy = window_flow(temp,imag2)
 		else:
 			ret = window_flow(temp,imag2,Ix,Iy)[0]
-			# print ret
-		# print Ix,Iy
 		u,v = u+ret[0],v+ret[1]
-		# print ret[0],ret[1]
-		# print u,v
 		M = np.float32([[1,0,u],[0,1,v]])
 		# Warped original iamge by (u+del(u),v+del(v)) instead of warping new image by del(u),del(v)
-		# ,as rounding off errors keep accumulating 
+		# , as rounding off errors keep accumulating 
   		temp = cv2.warpAffine(imag,M,(imag.shape[1],imag.shape[0]))
-  		try:
-			cv2.imwrite('Harish/'+str(u)+'.jpg',imag)
-		except:
-			print "I/O error"
 		iterations += 1
-	return [u*2,v*2] #A drift of (u,v) becomes (2u,2v) for a level above it
+	#A drift of (u,v) becomes (2u,2v) for a level above it
+	return [u*2,v*2] 
 
 
 def pyramid(l1_1,l1_2):
@@ -90,10 +77,8 @@ def pyramid(l1_1,l1_2):
 	x = pyramid_transition(l3_1,l3_2,x)
 	x = pyramid_transition(l2_1,l2_2,x)
 	x = pyramid_transition(l1_1,l1_2,x)
-	return [i/2 for i in x]
-	# return x
+	return [i for i in x]
 
 print "Calculating flow..."
 f_x,f_y = pyramid(img,img2)
 print "Flow : ",f_x," , ",f_y
-
