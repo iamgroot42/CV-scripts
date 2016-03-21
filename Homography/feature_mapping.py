@@ -3,10 +3,8 @@ import cv2
 from matplotlib import pyplot as plt
 import sys
 
-sys.settrace
-
 if len(sys.argv) < 4:
-	print "Format : python feature_mapping.py <image1> <image2> <SIFT/SURF>"
+	print "Format : python "+sys.argv[0]+" <image1> <image2> <SIFT/SURF>"
 	exit()
 
 if sys.argv[3].lower() not in ["sift","surf"]:
@@ -52,8 +50,8 @@ MIN_MATCH_COUNT = 10
 if len(good)>MIN_MATCH_COUNT:
 	src_pts = np.float32([ kps[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
 	dst_pts = np.float32([ kps2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-	f = open('points_img1.txt','w')
-	f2 = open('points_img2.txt','w')
+	f = open('Mapping/points_img1.txt','w')
+	f2 = open('Mapping/points_img2.txt','w')
 	for x in range(src_pts.size):
 		if x % 2 == 0:
 			f.write(str(src_pts.item(x))+" ")

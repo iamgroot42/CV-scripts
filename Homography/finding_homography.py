@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 
 try:
-	fp = open('points_img1.txt','r')
-	fp2 = open('points_img2.txt','r')
+	fp = open('Mapping/points_img1.txt','r')
+	fp2 = open('Mapping/points_img2.txt','r')
 except:
 	print "Files not found.Run 'features.py' first"
 	exit()
