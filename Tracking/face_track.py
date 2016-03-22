@@ -9,6 +9,7 @@ frames.sort()
 coor_dump = []
 
 try:
+	time = 1
 	for frame in frames:
 		data = cv2.imread("Images/"+frame)
 		gray = cv2.cvtColor(data, cv2.COLOR_BGR2GRAY)
@@ -24,8 +25,9 @@ try:
 		    roi_color = data[y:y+h, x:x+w]
 		    # print "(",x,",",y,",",w,",",h,")"
 		    frame_coor.append({"x":x+(w/2),"y":y+(h/2)})
-	
-		coor_dump.append(frame_coor)
+			
+		coor_dump.append({"time":time,"data":frame_coor})
+		time += 1
 		    # eyes = eye_cascade.detectMultiScale(roi_gray)
 		    # for (ex,ey,ew,eh) in eyes:
 		    #     cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
