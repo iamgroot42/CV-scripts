@@ -2,6 +2,17 @@ import cv2
 import sys
 import json
 import os
+import time as now
+
+display = False
+
+if len(sys.argv) < 2:
+	print "python "+sys.argv[0]+" Y/N (to track faces or not)"
+	exit()
+else:
+	if sys.argv[1] in ['Y','y']:
+		display = True
+
 
 frames = os.listdir("Images")
 frames.sort()
@@ -26,15 +37,17 @@ try:
 			
 		coor_dump.append({"time":time,"data":frame_coor})
 		time += 1
-		# cv2.imshow('data',data)
-		# cv2.waitKey(0)
-		# cv2.destroyAllWindows()
+		if display:
+			cv2.imshow('data',data)
+			cv2.waitKey(0)
+			cv2.destroyAllWindows()
 except:
 	print "I/O error"
 
 try:
-	with open('Graphs/points.json', 'w') as outfile:
+	file_name = str(now.strftime("%Y%m%d%H%M%S.json"))
+	with open("Graphs/" + file_name, 'w') as outfile:
 	    json.dump(coor_dump, outfile)
-	print "Dumped JSON"
+	print "Dumped JSON : "+file_name
 except:
 	print "I/O error"
