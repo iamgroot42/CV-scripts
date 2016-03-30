@@ -38,6 +38,7 @@ try:
 		coor_dump.append({"time":time,"data":frame_coor})
 		time += 1
 		if display:
+			print frame
 			cv2.imshow('data',data)
 			cv2.waitKey(0)
 			cv2.destroyAllWindows()
