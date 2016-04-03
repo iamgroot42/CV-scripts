@@ -3,19 +3,23 @@ import sys
 import json
 import os
 import time as now
+import homo # Local import
 
 display = False
 
 if len(sys.argv) < 2:
-	print "python "+sys.argv[0]+" Y/N (to track faces or not)"
+	print "python "+sys.argv[0]+" Y/N (to show tracked faces or not)"
 	exit()
 else:
-	if sys.argv[1] in ['Y','y']:
+	if sys.argv[1].lower() is 'y':
 		display = True
 
 
 frames = os.listdir("Images")
 frames.sort()
+frames = [x for x in frames if x.endswith(".jpg")]
+
+homo.warpVideo(frames,"sift")
 
 coor_dump = []
 
@@ -25,15 +29,15 @@ face_cascade = cv2.CascadeClassifier('Features/haarcascade_frontalface_default.x
 
 try:
 	for frame in frames:
-		print "I read "+frame
+		print "I read " + frame
 		data = cv2.imread("Images/"+frame)
 		gray = cv2.cvtColor(data, cv2.COLOR_BGR2GRAY)		
 
 		faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 		frame_coor = []
 		for (x,y,w,h) in faces:
-	    	cv2.rectangle(data,(x,y),(x+w,y+h),(255,0,0),2) #
-	    	roi_gray = gray[y:y+h, x:x+w]
+			cv2.rectangle(data,(x,y),(x+w,y+h),(255,0,0),2) 
+			roi_gray = gray[y:y+h, x:x+w]
 	    	roi_color = data[y:y+h, x:x+w]
 	    	frame_coor.append({"x":x+(w/2),"y":y+(h/2)})
 	

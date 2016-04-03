@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 import sys
+import os
 
 
-def getHomography(img,img2,feature_type):
-
+def getHomography(img, img2, feature_type):
 	if feature_type is "sift":
 		feature = cv2.xfeatures2d.SIFT_create()
 	else:
@@ -30,12 +30,38 @@ def getHomography(img,img2,feature_type):
 	MIN_MATCH_COUNT = 10
 	M = np.identity(3)
 
-	if len(good)>MIN_MATCH_COUNT:
+	if len(good) > MIN_MATCH_COUNT:
 		src_pts = np.float32([ kps[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
 		dst_pts = np.float32([ kps2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
 		M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
 
 	return M
+
+
+def warp(img, M):
+	warped_shape = img.shape[:-1][::-1] 	
+	warped = cv2.warpPerspective(img,M,warped_shape)
+	return warped
+
+
+def warpVideo(frames, feature_type):
+	first = cv2.imread("Images/" + frames[0])
+	result = [first]
+	second = first
+
+	print frames
+
+	for frame in frames[1:]:
+		second = cv2.imread("Images/" + frame)
+		M = getHomography(first, second, feature_type)
+		third = warp(first,M)
+		result.append(third)
+		first = second
+
+	i = 0
+	for image in result:
+		cv2.imwrite("Images/Warped/" + frames[i], image)
+		i += 1
 
 
 if __name__ == "__main__":
@@ -54,6 +80,5 @@ if __name__ == "__main__":
 
 	M = getHomography(img,img2,feature_type)
 
-	warped_shape = img.shape[:-1][::-1] 	
-	warped = cv2.warpPerspective(img,M,warped_shape)
+	warped = warp(img,M)
 	cv2.imwrite('Images/warped.jpg',warped)
