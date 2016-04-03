@@ -11,8 +11,8 @@ if sys.argv[3].lower() not in ["sift","surf"]:
 	print "Choose from SIFT/SURF"
 	exit()
 
-img = cv2.imread(sys.argv[1])
-img2 = cv2.imread(sys.argv[2])
+img = cv2.imread("Images/"+sys.argv[1])
+img2 = cv2.imread("Images/"+sys.argv[2])
 
 # img = cv2.resize(img,(2,2))
 # img2 = cv2.resize(img,(2,2))
@@ -21,17 +21,13 @@ gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
 if sys.argv[3].lower() is "sift":
 	feature = cv2.xfeatures2d.SIFT_create()
-	(kps, des) = feature.detectAndCompute(gray, None)
-	(kps2, des2) = feature.detectAndCompute(gray2, None)
-	print("A #  {} keypoints".format(len(kps)))
-	print("B #  {} keypoints".format(len(kps2)))
 else:
 	feature = cv2.xfeatures2d.SURF_create()
-	(kps, des) = feature.detectAndCompute(gray, None)
-	(kps2, des2) = feature.detectAndCompute(gray2, None)
-	print("A #  {} keypoints".format(len(kps)))
-	print("B #  {} keypoints".format(len(kps2)))
 
+(kps, des) = feature.detectAndCompute(gray, None)
+(kps2, des2) = feature.detectAndCompute(gray2, None)
+print("A #  {} keypoints".format(len(kps)))
+print("B #  {} keypoints".format(len(kps2)))
 
 FLANN_INDEX_KDTREE = 0
 index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 5)
