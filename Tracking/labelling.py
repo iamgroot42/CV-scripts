@@ -64,7 +64,6 @@ try:
 		   	frame_coor.append({"x":x+(w/2),"y":y+(h/2)})
 		
 		coor_dump.append({"time":time,"data":frame_coor})
-		time += 1
 		if display:
 				
 			cv2.imshow('data',data)
@@ -72,6 +71,7 @@ try:
 			cv2.waitKey(0)
 			cv2.destroyAllWindows()
 		right_clicks.append({"time":time,"data":store}) # append all the label points of frame in right_clicks array
+		time += 1
 
 
 except:
