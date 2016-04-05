@@ -46,21 +46,20 @@ def warp(img, M):
 
 def warpVideo(frames, feature_type):
 	first = cv2.imread("Images/" + frames[0])
-	result = [first]
 	second = first
 
-	print frames
+	cv2.imwrite("Images/Warped/" + frames[0], first)
 
+	print "Warping..."
+
+	i = 1
 	for frame in frames[1:]:
 		second = cv2.imread("Images/" + frame)
 		M = getHomography(first, second, feature_type)
 		third = warp(first,M)
-		result.append(third)
+		cv2.imwrite("Images/Warped/" + frames[i], third)
+		print " - Warped"
 		first = second
-
-	i = 0
-	for image in result:
-		cv2.imwrite("Images/Warped/" + frames[i], image)
 		i += 1
 
 

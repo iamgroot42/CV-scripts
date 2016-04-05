@@ -11,15 +11,15 @@ if len(sys.argv) < 2:
 	print "python "+sys.argv[0]+" Y/N (to show tracked faces or not)"
 	exit()
 else:
-	if sys.argv[1].lower() is 'y':
+	if sys.argv[1].lower() == 'y':
 		display = True
-
 
 frames = os.listdir("Images")
 frames.sort()
 frames = [x for x in frames if x.endswith(".jpg")]
 
 homo.warpVideo(frames,"sift")
+exit()
 
 coor_dump = []
 
@@ -52,7 +52,7 @@ except:
 
 try:
 	file_name = str(now.strftime("%Y%m%d%H%M%S.json"))
-	with open("Graphs/" + file_name, 'w') as outfile:
+	with open("Graphs/Automatic/" + file_name, 'w') as outfile:
 	    json.dump(coor_dump, outfile)
 	print "Dumped JSON : "+file_name
 except:
