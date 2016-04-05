@@ -7,7 +7,7 @@ from operator import itemgetter
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import rcParams
 
-colors = ['DarkMagenta','Blue','Yellow']
+colors = ['DarkMagenta','Blue','Yellow','Black','Green','Red']
 
 if len(sys.argv) < 2:
 	print "python " + sys.argv[0] + " file_name (.json file)"
@@ -35,7 +35,7 @@ Z = []
 # Sort by y-coordinate to approximate which user is which in the next frame. Not the
 # best way to do it, but works for the given dataset
 for frame in frames:
-	faces = sorted(frame['data'], key=itemgetter('y'))
+	faces = sorted(frame['data'], key=itemgetter('x'))
 	for i in range(nPeople):
 		X[i].append(faces[i].get('x'))
 		Y[i].append(faces[i].get('y'))
