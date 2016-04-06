@@ -49,7 +49,12 @@ try:
 			cv2.destroyAllWindows()
 except:
 	print "I/O error"
+	exit()
 
+if not frames:
+	print "Error : No images found"
+	exit()
+	
 try:
 	file_name = str(now.strftime("%Y%m%d%H%M%S.json"))
 	with open("Graphs/Automatic/" + file_name, 'w') as outfile:

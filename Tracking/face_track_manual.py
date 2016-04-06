@@ -1,15 +1,35 @@
 import cv2
 import json
 import os
+import sys
 import time as now
+import homo # Local import
+
+homog = False
+
+if len(sys.argv) < 2:
+	print "python "+sys.argv[0]+" Y/N (to normalize camera motion)"
+	exit()
+else:
+	if sys.argv[1].lower() == 'y':
+		homog = True
 
 print "Right-click to mark features (use same order throughout)"
 print "Press any button to move to next frame"
-raw_input("Ready?\n")
 
-frames = os.listdir("Images")
+
+if homog:
+	frames = os.listdir("Images")
+	frames.sort()
+	frames = [x for x in frames if x.endswith(".jpg")]
+	homo.warpVideo(frames,"sift")
+
+
+frames = os.listdir("Images/Warped")
 frames.sort()
 frames = [x for x in frames if x.endswith(".jpg")]
+
+raw_input("Ready?\n")
 
 coor_dump = []
 time = 1
@@ -40,7 +60,11 @@ try:
 		time += 1
 except:
 	print "I/O error"
+	exit()
 
+if not frames:
+	print "Error : No images found"
+	exit()
 
 try:
 	file_name = str(now.strftime("%Y%m%d%H%M%S.json"))
