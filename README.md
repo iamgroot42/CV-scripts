@@ -6,7 +6,7 @@ A set of functions (useful for CV) implemented using openCV for Python.
 
 ### Running it:
 - `python face_track.py <Y/N>` , to use HAAR to track faces in frames and dump them into a .json
-- `python face_track_manual.py`, to manually track features (marking them frame-by-frame)
+- `python face_track_manual.py <Y/N>`, to manually track features (marking them frame-by-frame)
 - `python Graphs/face_diff.py <input .json>`, to see "difference" plots, in case two features were used
 - `python Graphs/face_track.py <input .json>`, to plot faces across frames (correspondences established via sorting)
 

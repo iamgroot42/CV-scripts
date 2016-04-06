@@ -5,6 +5,8 @@ import sys
 import time as now
 import homo # Local import
 
+sys.settrace
+
 homog = False
 
 if len(sys.argv) < 2:
@@ -42,14 +44,14 @@ def mouse_callback(event, x, y, flags, params):
 	if event == 2:
 		global store
 		store.append({"x":x,"y":y})
-		print store
+		print "{x:"+x+",y:"+y+"}"
 
 
 try:
 	for frame in frames:
 		store = list() #reset the store array for next frame
 		print "I read " + frame
-		data = cv2.imread("Images/"+frame)
+		data = cv2.imread("Images/Warped/"+frame)
 
 		cv2.imshow('data',data)
 		cv2.setMouseCallback('data', mouse_callback)
