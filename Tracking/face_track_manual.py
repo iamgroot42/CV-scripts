@@ -3,7 +3,6 @@ import json
 import os
 import sys
 import time as now
-import homo # Local import
 
 sys.settrace
 
@@ -21,11 +20,7 @@ print "Press any button to move to next frame"
 
 
 if homog:
-	frames = os.listdir("Images")
-	frames.sort()
-	frames = [x for x in frames if x.endswith(".jpg")]
-	homo.warpVideo(frames,"sift")
-
+	os.system('python homo.py sift')
 
 frames = os.listdir("Images/Warped")
 frames.sort()
@@ -44,7 +39,7 @@ def mouse_callback(event, x, y, flags, params):
 	if event == 2:
 		global store
 		store.append({"x":x,"y":y})
-		print "{x:"+x+",y:"+y+"}"
+		print "{x:"+str(x)+",y:"+str(y)+"}"
 
 
 try:

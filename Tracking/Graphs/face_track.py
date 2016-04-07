@@ -37,6 +37,7 @@ Z = []
 for frame in frames:
 	faces = sorted(frame['data'], key=itemgetter('x'))
 	for i in range(nPeople):
+
 		X[i].append(faces[i].get('x'))
 		Y[i].append(faces[i].get('y'))
 	Z.append(time)
@@ -57,9 +58,10 @@ ax.set_xlim(0,1000)
 ax.set_ylabel('Y axis')
 ax.set_ylim(0,1000)
 ax.set_zlabel('Time (s)')
-ax.set_zlim(0,40)
+ax.set_zlim(0,150)
 
 ax.set_title('Face Tracking', va='bottom')
 ax.view_init(elev=18, azim=-27)
 ax.dist=9
 plt.show()
+	

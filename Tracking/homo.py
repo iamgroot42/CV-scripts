@@ -65,19 +65,15 @@ def warpVideo(frames, feature_type):
 
 if __name__ == "__main__":
 
-	if len(sys.argv) < 4:
-		print "Format : python "+sys.argv[0]+" <image1> <image2> <SIFT/SURF>"
+	if len(sys.argv) < 2:
+		print "Format : python "+sys.argv[0]+" <SIFT/SURF>"
 		exit()
 	
-	if sys.argv[3].lower() not in ["sift","surf"]:
+	if sys.argv[1].lower() not in ["sift","surf"]:
 		print "Choose from SIFT/SURF"
 		exit()
 
-	img = cv2.imread("Images/"+sys.argv[1])
-	img2 = cv2.imread("Images/"+sys.argv[2])
-	feature_type = sys.argv[3].lower()
-
-	M = getHomography(img,img2,feature_type)
-
-	warped = warp(img,M)
-	cv2.imwrite('Images/warped.jpg',warped)
+	frames = os.listdir("Images")
+	frames.sort()
+	frames = [x for x in frames if x.endswith(".jpg")]
+	warpVideo(frames,sys.argv[1].lower())
