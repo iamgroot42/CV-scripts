@@ -2,21 +2,23 @@ import json
 import numpy as np
 import sys
 from operator import itemgetter
+import matplotlib.pyplot as plt
 
 
 # Correlation
 def corr(A, B, pop):
+	rekt = {}
 	for j in range(pop):
-		for k in range(j+1,pop):
+		ret = []
+		for k in range(pop):
 			p = [x[j] for x in A]
 			q = [x[k] for x in A]
 			r = [y[j] for y in B]
 			s = [y[k] for y in B]
-			print "X with X",np.corrcoef(p,q)[0][1]
-			print "X with Y",np.corrcoef(p,s)[0][1]
-			print "Y with X",np.corrcoef(r,q)[0][1]
-			print "Y with Y",np.corrcoef(r,s)[0][1]
-
+			ret.append({"XX":np.corrcoef(p,q)[0][1],"XY":np.corrcoef(p,s)[0][1],"YX":np.corrcoef(r,q)[0][1],"YY":np.corrcoef(r,q)[0][1]})
+		rekt[str(j+1)]=ret
+	return rekt
+	
 
 # Sliding window
 def slider(A, B, ws, pop):
@@ -25,7 +27,9 @@ def slider(A, B, ws, pop):
 	L = len(A)
 	corr(windowA,windowB,pop)
 	for i in range(L-ws):
-		corr(windowA, windowB, pop)
+		tbw = corr(windowA, windowB, pop)
+		f = open("Values/"+str(i+1)+".txt",'w')
+		json.dump(tbw,f)
 		windowA.append(A[ws+i])
 		windowA = windowA[1:]
 		windowB.append(B[ws+i])
@@ -53,6 +57,7 @@ def all_corr(data, window_size):
 			Y[j].append(faces[i].get('y'))
 		j += 1
 	slider(X, Y, window_size, nPeople)
+
 
 
 if __name__ == "__main__":
