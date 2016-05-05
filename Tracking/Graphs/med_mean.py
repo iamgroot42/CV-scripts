@@ -26,8 +26,10 @@ for subdir, dirs, files in os.walk(rootdir):
 		c.seek(0)
 		numcol = 0
 		numrow = 0
+		trow = []
 		for i in data:
 			if count == 2:
+				trow = i
 				numcol = len(i)
 				numrow = (numcol-1)/2
 				rowtemp = numrow
@@ -62,15 +64,19 @@ for subdir, dirs, files in os.walk(rootdir):
 				qm = np.median(rm)
 				tempr.append(q)
 				temprm.append(qm)
+			tempr = [str(x+1)] + tempr
+			temprm = [str(x+1)] + temprm
 			all.append(tempr)
 			allm.append(temprm)
 			row_flag += 1
 		alls = []
 		alls.append(['mean'])
+		alls.append(trow)
 		for g in all:
 			alls.append(g)
 		alls.append([])
 		alls.append(['median'])
+		alls.append(trow)
 		for g in allm:
 			alls.append(g)
 
