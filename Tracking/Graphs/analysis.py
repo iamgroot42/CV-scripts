@@ -15,7 +15,7 @@ def corr(A, B, pop):
 			q = [x[k] for x in A]
 			r = [y[j] for y in B]
 			s = [y[k] for y in B]
-			ret.append({"XX":np.corrcoef(p,q)[0][1],"XY":np.corrcoef(p,s)[0][1],"YX":np.corrcoef(r,q)[0][1],"YY":np.corrcoef(r,q)[0][1]})
+			ret.append({"XX":np.corrcoef(p,q)[0][1],"YY":np.corrcoef(r,s)[0][1]})
 		rekt[str(j+1)]=ret
 	return rekt
 	
