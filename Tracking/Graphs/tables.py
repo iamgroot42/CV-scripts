@@ -1,15 +1,14 @@
-import json
-import matplotlib.pyplot as plt
-import numpy as np
-import Tkinter
-import sys
 from operator import itemgetter
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import rcParams
+from itertools import islice
+import matplotlib.pyplot as plt
+import numpy as np
+import json
+import Tkinter
+import sys
 import math
 import csv
-from itertools import islice
-import sys
 import os
 
 rootdir = 'Values/'
@@ -46,12 +45,8 @@ for x in dl:
 			for p in keylist:
 				first.append('YY')
 				top.append(p)
-				# first.append('YX')
-				# top.append('-')
 				first.append('XX')
 				top.append('-')
-				# first.append('XY')
-				# top.append('-')
 			all.append(top)
 			all.append(first)
 
@@ -62,17 +57,11 @@ for x in dl:
 				for z in val:
 					temp = []
 					yy = z.get('YY')
-					yx = z.get('YX')
 					xx = z.get('XX')
-					xy = z.get('XY')
 					temp.append(yy)
-					# temp.append(yx)
 					temp.append(xx)
-					# temp.append(xy)
 					row = row + temp
 				all.append(row)
-			# temp=[]
-			# all.append(temp)
 
 		x1,x2 = os.path.split(x)
 		b = x2+'_table.csv'
@@ -82,9 +71,3 @@ for x in dl:
 		rw = csv.writer(cw, lineterminator='\n')
 		rw.writerows(all)
 		cw.close()
-
-
-
-
-
-

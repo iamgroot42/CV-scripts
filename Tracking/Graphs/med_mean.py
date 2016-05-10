@@ -21,7 +21,6 @@ for subdir, dirs, files in os.walk(rootdir):
 		data = csv.reader(c)
 		datal = list(data)
 		row_count = len(datal)
-		# print row_count
 		count = 0;
 		c.seek(0)
 		numcol = 0
@@ -33,7 +32,6 @@ for subdir, dirs, files in os.walk(rootdir):
 				numcol = len(i)
 				numrow = (numcol-1)/2
 				rowtemp = numrow
-				# print numcol
 			count += 1
 		c.seek(0)
 		all = []
@@ -52,9 +50,7 @@ for subdir, dirs, files in os.walk(rootdir):
 				tempc = []
 				tempcm = []
 				for i in data:
-					# print i
 					if (count-row_flag)%(rowtemp+3)==0:
-						# print i
 						tempc.append(i[y])
 						tempcm.append(i[y])
 					count = count+1
@@ -89,14 +85,3 @@ for subdir, dirs, files in os.walk(rootdir):
 		rw = csv.writer(cw, lineterminator='\n')
 		rw.writerows(alls)
 		cw.close()
-
-
-
-
-
-
-
-# She wanted only the sparkle of his eyes,
-# He promised her to bring the stars of skies,
-# With another promise she was again left out,
-# Words worked again, the evil inside him said aloud
