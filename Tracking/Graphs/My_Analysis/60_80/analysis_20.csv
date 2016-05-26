@@ -1,0 +1,15 @@
+Filename,TruePos_X,TruePos_Y,TrueNeg_X,TrueNeg_Y,FalsePos_X,FalsePos_Y,FalseNg_X,FalseNeg_Y
+"Values/lab_s1_1(2,3,self)",2,5,164,185,26,5,36,33
+"Values/outdoor_s1_1(1,4,self)",15,13,12,1,93,104,6,8
+"Values/outdoor_s1_2 (1,2,4,self)",69,11,77,139,91,29,99,157
+"Values/lab_s1_1(1,4),(2,3);(1,4),(2,3,self)",46,7,112,120,12,4,16,55
+"Values/outdoor_s2_2(1,2,self)",59,30,0,0,0,0,36,65
+"Values/outdoor_s2_1(1,2,self)",94,88,0,0,0,0,21,27
+"Values/lab_s1_1(1,2,3,4,self);(1,4),(2,3)",87,37,49,171,195,73,35,85
+"Values/lab_s1_1(2,3,self)",2,5,164,185,26,5,36,33
+"Values/outdoor_s1_1(1,4,self)",15,13,12,1,93,104,6,8
+"Values/outdoor_s1_2 (1,2,4,self)",69,11,77,139,91,29,99,157
+"Values/lab_s1_1(1,4),(2,3);(1,4),(2,3,self)",46,7,112,120,12,4,16,55
+"Values/outdoor_s2_2(1,2,self)",59,30,0,0,0,0,36,65
+"Values/outdoor_s2_1(1,2,self)",94,88,0,0,0,0,21,27
+"Values/lab_s1_1(1,2,3,4,self);(1,4),(2,3)",87,37,49,171,195,73,35,85

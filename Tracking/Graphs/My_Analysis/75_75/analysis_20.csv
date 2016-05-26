@@ -1,0 +1,8 @@
+Filename,TruePos_X,TruePos_Y,TrueNeg_X,TrueNeg_Y,FalsePos_X,FalsePos_Y,FalseNg_X,FalseNeg_Y
+"Values/lab_s1_1(2,3,self)",0,11,182,181,8,9,38,27
+"Values/outdoor_s1_1(1,4,self)",14,16,17,1,88,104,7,5
+"Values/outdoor_s1_2 (1,2,4,self)",57,19,93,114,75,54,111,149
+"Values/lab_s1_1(1,4),(2,3);(1,4),(2,3,self)",38,14,117,112,7,12,24,48
+"Values/outdoor_s2_2(1,2,self)",52,35,0,0,0,0,43,60
+"Values/outdoor_s2_1(1,2,self)",82,91,0,0,0,0,33,24
+"Values/lab_s1_1(1,2,3,4,self);(1,4),(2,3)",70,41,71,157,173,87,52,81
