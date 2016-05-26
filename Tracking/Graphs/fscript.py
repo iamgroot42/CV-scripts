@@ -35,7 +35,8 @@ for i in dl:
 		q.append(i)
 		ddict[q1] = q
 
-head = ['Filename','TruePos_X','TruePos_Y','TrueNeg_X','TrueNeg_Y','FalsePos_X','FalsePos_Y','FalseNg_X','FalseNeg_Y']
+# head = ['Filename','TruePos_X','TruePos_Y','TrueNeg_X','TrueNeg_Y','FalsePos_X','FalsePos_Y','FalseNg_X','FalseNeg_Y']
+head = ['Filename','Precision_X','Accuracy_X','Recall_X','Precision_Y','Accuracy_Y','Recall_Y']
 for yoho in ddict:
 	all = []
 	ky,kz = os.path.split(yoho)
@@ -268,7 +269,13 @@ for yoho in ddict:
 				# da2 = list(da1)
 				for kf in da1:
 					nopr.append(kf)
-				accha = [yoho,xtp,ytp,xtn,ytn,xfp,yfp,xfn,yfn]
+				x_precision = xtp/float(xtp+xfp)
+				x_accuracy = (xtp + xtn)/float(xtp + xtn + xfp + xfn)
+				x_recall = xtp/float(xtp+xfn)
+				y_precision = ytp/float(ytp+yfp)
+				y_accuracy = (ytp + ytn)/float(ytp + ytn + yfp + yfn)
+				y_recall = ytp/float(ytp+xfn)
+				accha = [yoho,x_precision,x_accuracy,x_recall,y_precision,y_accuracy,y_recall]
 				nopr.append(accha)
 				tok.close()
 				tok = open(fk, 'w')
